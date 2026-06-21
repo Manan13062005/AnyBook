@@ -2,10 +2,12 @@ package com.example.anybook.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Dark theme palette
+val Blue80 = Color(0xFF9FCBFF)      // primary (dark theme)
+val BlueGrey80 = Color(0xFFB8C6D9)  // secondary (dark theme)
+val Teal80 = Color(0xFF9AD8D0)      // tertiary / accent (dark theme)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Light theme palette
+val Blue40 = Color(0xFF1565C0)      // primary (light theme)
+val BlueGrey40 = Color(0xFF455A64)  // secondary (light theme)
+val Teal40 = Color(0xFF00796B)      // tertiary / accent (light theme)
