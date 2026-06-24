@@ -86,7 +86,7 @@ fun RoleSelectorScreen(onRoleSelected: (UserRole) -> Unit) {
                                 .weight(1f)
                                 .height(56.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF1565C0)
+                                containerColor = Color(0xFF3D77B0)
                             )
                         ) {
                             Text(
@@ -102,7 +102,7 @@ fun RoleSelectorScreen(onRoleSelected: (UserRole) -> Unit) {
                                 .weight(1f)
                                 .height(56.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF1565C0)
+                                containerColor = Color(0xFF3D77B0)
                             )
                         ) {
                             Text(
