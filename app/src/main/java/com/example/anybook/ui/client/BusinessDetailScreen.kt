@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -16,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.anybook.data.model.Business
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material.icons.filled.DateRange
@@ -24,7 +22,6 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.rememberDatePickerState
-import java.text.SimpleDateFormat
 
 private val PRIMARY_BLUE = Color(0xFF1565C0)
 private val LIGHT_BLUE = Color(0xFF64B5F6)
