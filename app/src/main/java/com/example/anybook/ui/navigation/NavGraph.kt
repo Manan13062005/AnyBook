@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +34,8 @@ import com.example.anybook.ui.client.BookingScreen
 import com.example.anybook.ui.client.BookingScreenCallbacks
 import com.example.anybook.ui.client.BookingSuccessScreen
 import com.example.anybook.ui.client.BusinessDetailScreen
+import com.example.anybook.ui.client.ClientProfileCallbacks
+import com.example.anybook.ui.client.ClientProfileScreen
 import com.example.anybook.ui.client.ConfirmationScreen
 import com.example.anybook.ui.client.ConfirmationScreenCallbacks
 import com.example.anybook.ui.client.HomeScreen
@@ -225,10 +228,6 @@ fun NavGraph(
     }
 }
 
-/**
- * Client Main Flow with Bottom Navigation Bar
- * Manages tab switching between Home and My Bookings
- */
 @Composable
 fun ClientMainFlowWithNavBar(navController: NavHostController) {
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -239,21 +238,44 @@ fun ClientMainFlowWithNavBar(navController: NavHostController) {
             .background(Color.White)
     ) {
         // Content based on selected tab
-        when (selectedTab) {
-            0 -> {
-                HomeScreen(
-                    onBusinessTap = { businessId ->
-                        navController.navigate("business_detail/$businessId")
-                    },
-                    onMyBookingsTap = {
-                        selectedTab = 1
-                    }
-                )
-            }
-            1 -> {
-                MyBookingsScreen(
-                    bookings = MockBookingRepository.getMockBookings()
-                )
+        Column(modifier = Modifier.weight(1f)) {
+            when (selectedTab) {
+                0 -> {
+                    HomeScreen(
+                        onBusinessTap = { businessId ->
+                            navController.navigate("business_detail/$businessId")
+                        },
+                        onMyBookingsTap = {
+                            selectedTab = 1
+                        }
+                    )
+                }
+                1 -> {
+                    MyBookingsScreen(
+                        bookings = MockBookingRepository.getMockBookings()
+                    )
+                }
+                2 -> {
+                    ClientProfileScreen(
+                        name = "Ananya Sharma",
+                        email = "ananya.sharma@email.com",
+                        phone = "+91 98765 43210",
+                        callbacks = ClientProfileCallbacks(
+                            onBackClick = { selectedTab = 0 },
+                            onMyBookingsClick = { selectedTab = 1 },
+                            onSwitchToOwner = {
+                                navController.navigate(Screen.RoleSelector) {
+                                    popUpTo(0) { inclusive = true }
+                                }
+                            },
+                            onLogout = {
+                                navController.navigate(Screen.RoleSelector) {
+                                    popUpTo(0) { inclusive = true }
+                                }
+                            }
+                        )
+                    )
+                }
             }
         }
 
@@ -311,13 +333,31 @@ fun ClientMainFlowWithNavBar(navController: NavHostController) {
                         color = if (selectedTab == 1) Color.White else Color(0xFF1565C0)
                     )
                 }
+
+                // Profile Tab
+                androidx.compose.material3.Button(
+                    onClick = { selectedTab = 2 },
+                    modifier = Modifier.weight(1f),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                        containerColor = if (selectedTab == 2) Color(0xFF1565C0) else Color.White
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Person,
+                        contentDescription = "Profile",
+                        tint = if (selectedTab == 2) Color.White else Color(0xFF1565C0)
+                    )
+                    Text(
+                        "Profile",
+                        fontSize = 11.sp,
+                        color = if (selectedTab == 2) Color.White else Color(0xFF1565C0)
+                    )
+                }
             }
         }
     }
 }
-/**
- * Placeholder for Owner Dashboard (Coming Soon)
- */
+
 @Composable
 fun OwnerDashboardPlaceholder() {
     Column(
