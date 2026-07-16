@@ -31,7 +31,6 @@ private val TEXT_LIGHT = Color(0xFF757575)
 private val ERROR_RED = Color(0xFFD32F2F)
 private val SUCCESS_GREEN = Color(0xFF2E7D32)
 
-
 @Composable
 fun AppointmentCard(
     clientName: String,
