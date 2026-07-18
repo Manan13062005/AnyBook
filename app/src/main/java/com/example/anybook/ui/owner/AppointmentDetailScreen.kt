@@ -1,7 +1,6 @@
 package com.example.anybook.ui.owner
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -24,16 +23,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.anybook.ui.components.AppButton
+import com.example.anybook.ui.components.ButtonVariant
+import com.example.anybook.ui.components.StatusChip
+import androidx.core.net.toUri
 
 private val PRIMARY_BLUE = Color(0xFF1565C0)
 private val BACKGROUND = Color(0xFFFAFAFA)
 private val CARD_BACKGROUND = Color.White
 private val TEXT_DARK = Color(0xFF212121)
 private val TEXT_LIGHT = Color(0xFF757575)
-private val ERROR_RED = Color(0xFFD32F2F)
-private val SUCCESS_GREEN = Color(0xFF2E7D32)
 
-// ============ DATA MODEL ============
 data class AppointmentDetail(
     val id: String,
     val clientName: String,
@@ -60,18 +60,11 @@ fun AppointmentDetailScreen(
     val context = LocalContext.current
     var showCancelDialog by remember { mutableStateOf(false) }
 
-    val statusColor = when (appointment.status) {
-        "Upcoming" -> PRIMARY_BLUE
-        "Completed" -> SUCCESS_GREEN
-        else -> ERROR_RED
-    }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(BACKGROUND)
     ) {
-        // ============ HEADER ============
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -101,21 +94,8 @@ fun AppointmentDetailScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // ============ STATUS BADGE ============
-            Box(
-                modifier = Modifier
-                    .background(statusColor.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
-            ) {
-                Text(
-                    text = appointment.status,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = statusColor
-                )
-            }
+            StatusChip(status = appointment.status)
 
-            // ============ CLIENT INFO CARD ============
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -144,24 +124,19 @@ fun AppointmentDetailScreen(
                     }
                 }
 
-                Button(
+                AppButton(
+                    text = "Call Client",
+                    icon = Icons.Default.Call,
                     onClick = {
                         val intent = Intent(Intent.ACTION_DIAL).apply {
-                            data = Uri.parse("tel:${appointment.clientPhone}")
+                            data = "tel: ${appointment.clientPhone}".toUri()
                         }
                         context.startActivity(intent)
-                    },
-                    modifier = Modifier.fillMaxWidth().height(44.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = PRIMARY_BLUE),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Icon(Icons.Default.Call, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Call Client", fontWeight = FontWeight.Medium)
-                }
+                    }
+                )
+
             }
 
-            // ============ APPOINTMENT INFO CARD ============
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -184,32 +159,46 @@ fun AppointmentDetailScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // ============ ACTION BUTTONS ============
             if (appointment.status == "Upcoming") {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Button(
-                        onClick = { callbacks.onMarkCompleted(appointment.id) },
-                        modifier = Modifier.fillMaxWidth().height(48.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = SUCCESS_GREEN),
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        Text("Mark as Completed", fontWeight = FontWeight.Bold, color = Color.White)
-                    }
 
-                    OutlinedButton(
-                        onClick = { showCancelDialog = true },
-                        modifier = Modifier.fillMaxWidth().height(48.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = ERROR_RED),
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        Text("Cancel Appointment", fontWeight = FontWeight.Medium)
-                    }
+                    AppButton(
+                        text = "Mark as Completed",
+                        variant = ButtonVariant.SUCCESS,
+                        onClick = { callbacks.onMarkCompleted(appointment.id) }
+                    )
+
+                    AppButton(
+                        text = "Cancel Appointment",
+                        variant = ButtonVariant.OUTLINED_DESTRUCTIVE,
+                        onClick = { showCancelDialog = true }
+                    )
+
                 }
+            }
+            if (showCancelDialog) {
+                AlertDialog(
+                    onDismissRequest = { showCancelDialog = false },
+                    title = { Text("Cancel Appointment?") },
+                    text = { Text("This will notify ${appointment.clientName} that their appointment has been cancelled. This action cannot be undone.") },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            showCancelDialog = false
+                            callbacks.onCancelAppointment(appointment.id)
+                        }) {
+                            Text("Yes, Cancel", color = Color(0xFFD32F2F))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showCancelDialog = false }) {
+                            Text("Go Back")
+                        }
+                    }
+                )
             }
         }
     }
 
-    // ============ CANCEL CONFIRMATION DIALOG ============
     if (showCancelDialog) {
         AlertDialog(
             onDismissRequest = { showCancelDialog = false },
@@ -220,9 +209,10 @@ fun AppointmentDetailScreen(
                     showCancelDialog = false
                     callbacks.onCancelAppointment(appointment.id)
                 }) {
-                    Text("Yes, Cancel", color = ERROR_RED)
+                    Text("Yes, Cancel", color = Color(0xFFD32F2F))
                 }
             },
+
             dismissButton = {
                 TextButton(onClick = { showCancelDialog = false }) {
                     Text("Go Back")
@@ -232,7 +222,6 @@ fun AppointmentDetailScreen(
     }
 }
 
-// ============ REUSABLE COMPONENT ============
 @Composable
 private fun DetailInfoRow(icon: ImageVector, label: String, value: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {

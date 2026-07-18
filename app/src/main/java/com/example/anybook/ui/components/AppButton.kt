@@ -23,16 +23,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// ============ BRAND COLORS ============
 private val PRIMARY_BLUE = Color(0xFF1565C0)
 private val ERROR_RED = Color(0xFFD32F2F)
 private val DISABLED_GRAY = Color(0xFFBDBDBD)
+private val SUCCESS_GREEN = Color(0xFF2E7D32)
 
-// ============ BUTTON VARIANT ============
 enum class ButtonVariant {
     PRIMARY,
     OUTLINED,
-    DESTRUCTIVE
+    DESTRUCTIVE,
+    SUCCESS,
+    OUTLINED_DESTRUCTIVE
 }
 
 @Composable
@@ -108,10 +109,48 @@ fun AppButton(
                 )
             }
         }
+
+        ButtonVariant.SUCCESS -> {
+            Button(
+                onClick = onClick,
+                enabled = enabled && !isLoading,
+                modifier = modifier.fillMaxWidth().height(height),
+                shape = shape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = SUCCESS_GREEN,
+                    disabledContainerColor = DISABLED_GRAY
+                )
+            ) {
+                AppButtonContent(
+                    text = text,
+                    icon = icon,
+                    isLoading = isLoading,
+                    contentColor = Color.White
+                )
+            }
+        }
+        ButtonVariant.OUTLINED_DESTRUCTIVE -> {
+            OutlinedButton(
+                onClick = onClick,
+                enabled = enabled && !isLoading,
+                modifier = modifier.fillMaxWidth().height(height),
+                shape = shape,
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = ERROR_RED,
+                    disabledContentColor = DISABLED_GRAY
+                )
+            ) {
+                AppButtonContent(
+                    text = text,
+                    icon = icon,
+                    isLoading = isLoading,
+                    contentColor = ERROR_RED
+                )
+            }
+        }
     }
 }
 
-// ============ SHARED BUTTON CONTENT (icon/spinner + label) ============
 @Composable
 private fun AppButtonContent(
     text: String,
@@ -169,6 +208,12 @@ fun AppButtonPreview_Outlined() {
 @Composable
 fun AppButtonPreview_Destructive() {
     AppButton(text = "Log Out", onClick = {}, variant = ButtonVariant.DESTRUCTIVE)
+}
+
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+fun AppButtonPreview_Success() {
+    AppButton(text = "Mark as Completed", onClick = {}, variant = ButtonVariant.SUCCESS)
 }
 
 @Preview(showBackground = true, widthDp = 360)

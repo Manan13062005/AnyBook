@@ -20,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.anybook.ui.components.AppButton
+import com.example.anybook.ui.components.EmptyState
 
 private val PRIMARY_BLUE = Color(0xFF1565C0)
 private val BACKGROUND = Color(0xFFFAFAFA)
@@ -28,7 +30,6 @@ private val TEXT_DARK = Color(0xFF212121)
 private val TEXT_LIGHT = Color(0xFF757575)
 private val ERROR_RED = Color(0xFFD32F2F)
 
-// ============ DATA MODEL ============
 data class ManagedService(
     val id: String,
     val name: String,
@@ -59,7 +60,6 @@ fun ServicesScreen(
             .fillMaxSize()
             .background(BACKGROUND)
     ) {
-        // ============ HEADER ============
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -93,35 +93,13 @@ fun ServicesScreen(
             }
         }
 
-        // ============ SERVICES LIST ============
         if (services.isEmpty()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(32.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Spa,
-                    contentDescription = null,
-                    tint = TEXT_LIGHT,
-                    modifier = Modifier.size(48.dp)
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "No services added yet",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = TEXT_DARK
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Tap + to add your first service",
-                    fontSize = 13.sp,
-                    color = TEXT_LIGHT
-                )
-            }
+            EmptyState(
+                icon = Icons.Default.Spa,
+                title = "No services added yet",
+                subtitle = "ap + to add your first service",
+                modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+            )
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -145,7 +123,6 @@ fun ServicesScreen(
         }
     }
 
-    // ============ ADD/EDIT BOTTOM SHEET ============
     if (showBottomSheet) {
         ServiceFormBottomSheet(
             editingService = editingService,
@@ -161,7 +138,6 @@ fun ServicesScreen(
         )
     }
 
-    // ============ DELETE CONFIRMATION DIALOG ============
     deletingService?.let { service ->
         AlertDialog(
             onDismissRequest = { deletingService = null },
@@ -184,7 +160,6 @@ fun ServicesScreen(
     }
 }
 
-// ============ SERVICE CARD ============
 @Composable
 private fun ServiceCard(
     service: ManagedService,
@@ -206,7 +181,9 @@ private fun ServiceCard(
                     fontWeight = FontWeight.Bold,
                     color = if (service.isActive) TEXT_DARK else TEXT_LIGHT
                 )
+
                 Spacer(modifier = Modifier.height(4.dp))
+
                 Text(
                     text = "${formatPrice(service.price)} · ${service.duration}",
                     fontSize = 13.sp,
@@ -224,9 +201,11 @@ private fun ServiceCard(
 
         Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
             IconButton(onClick = onEditClick, modifier = Modifier.size(36.dp)) {
-                Icon(Icons.Default.Edit, contentDescription = "Edit", tint = PRIMARY_BLUE, modifier = Modifier.size(20.dp))
+                Icon(Icons.Default.Edit, contentDescription = "Edit", tint = TEXT_LIGHT, modifier = Modifier.size(20.dp))
             }
+
             Spacer(modifier = Modifier.width(8.dp))
+
             IconButton(onClick = onDeleteClick, modifier = Modifier.size(36.dp)) {
                 Icon(Icons.Default.Delete, contentDescription = "Delete", tint = ERROR_RED, modifier = Modifier.size(20.dp))
             }
@@ -238,7 +217,6 @@ private fun formatPrice(price: String): String {
     return if (price.isBlank() || price == "0") "Price on request" else "₹$price"
 }
 
-// ============ ADD/EDIT BOTTOM SHEET FORM ============
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ServiceFormBottomSheet(
@@ -301,19 +279,11 @@ private fun ServiceFormBottomSheet(
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = PRIMARY_BLUE)
             )
 
-            Button(
-                onClick = { onSave(name, price, duration) },
+            AppButton(
+                text = if(editingService != null) "Save Changes" else " Add Service",
                 enabled = isFormValid,
-                modifier = Modifier.fillMaxWidth().height(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = PRIMARY_BLUE),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text(
-                    text = if (editingService != null) "Save Changes" else "Add Service",
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-            }
+                onClick = {onSave(name, price, duration)}
+            )
         }
     }
 }
