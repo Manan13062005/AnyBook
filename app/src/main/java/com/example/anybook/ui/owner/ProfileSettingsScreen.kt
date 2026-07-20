@@ -7,8 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -26,9 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.anybook.ui.components.AppButton
 
 private val PRIMARY_BLUE = Color(0xFF1565C0)
-private val LIGHT_BLUE = Color(0xFF64B5F6)
 private val BACKGROUND = Color(0xFFFAFAFA)
 private val CARD_BACKGROUND = Color.White
 private val TEXT_DARK = Color(0xFF212121)
@@ -62,7 +60,7 @@ fun ProfileSettingsScreen(
             .fillMaxSize()
             .background(BACKGROUND)
     ) {
-        // Header
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -86,7 +84,6 @@ fun ProfileSettingsScreen(
             )
         }
 
-        // Form Content
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -95,7 +92,6 @@ fun ProfileSettingsScreen(
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // Title Section
             Column {
                 Text(
                     text = "Complete Your Business Profile",
@@ -103,7 +99,9 @@ fun ProfileSettingsScreen(
                     fontWeight = FontWeight.Bold,
                     color = TEXT_DARK
                 )
+
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Text(
                     text = "Fill in your business details to get started",
                     fontSize = 14.sp,
@@ -113,7 +111,6 @@ fun ProfileSettingsScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Business Name Field
             Column {
                 Text(
                     text = "Business Name *",
@@ -153,7 +150,6 @@ fun ProfileSettingsScreen(
                 }
             }
 
-            // Address Field
             Column {
                 Text(
                     text = "Business Address *",
@@ -193,7 +189,6 @@ fun ProfileSettingsScreen(
                 }
             }
 
-            // Phone Number Field
             Column {
                 Text(
                     text = "Phone Number *",
@@ -233,7 +228,6 @@ fun ProfileSettingsScreen(
                 }
             }
 
-            // Category Field
             Column {
                 Text(
                     text = "Business Category *",
@@ -273,7 +267,6 @@ fun ProfileSettingsScreen(
                 }
             }
 
-            // Info Box
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -288,16 +281,16 @@ fun ProfileSettingsScreen(
             }
         }
 
-        // Bottom Button
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(CARD_BACKGROUND)
                 .padding(16.dp)
         ) {
-            Button(
+            AppButton(
+                text = "Complete Setup",
+                enabled = isFormValid,
                 onClick = {
-                    // Validate form
                     var isValid = true
 
                     if (businessName.isEmpty()) {
@@ -320,21 +313,8 @@ fun ProfileSettingsScreen(
                     if (isValid) {
                         callbacks.onCompleteSetup(businessName, address, phone, category)
                     }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = PRIMARY_BLUE),
-                enabled = isFormValid,
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text(
-                    text = "Complete Setup",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-            }
+                }
+            )
         }
     }
 }
@@ -351,4 +331,3 @@ fun ProfileSettingsScreenPreview() {
         )
     )
 }
-

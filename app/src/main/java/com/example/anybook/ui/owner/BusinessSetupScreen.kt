@@ -37,6 +37,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Surface
+import com.example.anybook.ui.components.AppButton
+import com.example.anybook.ui.components.ButtonVariant
 
 private val PRIMARY_BLUE = Color(0xFF1565C0)
 private val BACKGROUND = Color(0xFFFAFAFA)
@@ -59,17 +61,14 @@ fun BusinessSetupScreen(
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
 
-    // BUSINESS INFO TAB STATE
     var businessHours by remember { mutableStateOf("9:00 AM - 6:00 PM") }
     var businessDesc by remember { mutableStateOf("") }
 
-    //  SERVICES TAB STATE
     var servicesList by remember { mutableStateOf(listOf<Service>()) }
     var serviceName by remember { mutableStateOf("") }
     var servicePrice by remember { mutableStateOf("") }
     var serviceDuration by remember { mutableStateOf("") }
 
-    //  IMAGES TAB STATE
     var imageCount by remember { mutableIntStateOf(0) }
 
     Column(
@@ -77,7 +76,6 @@ fun BusinessSetupScreen(
             .fillMaxSize()
             .background(BACKGROUND)
     ) {
-        //  HEADER
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -91,7 +89,6 @@ fun BusinessSetupScreen(
             Text("Business Setup", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = TEXT_DARK, modifier = Modifier.weight(1f))
         }
 
-        //  TAB ROW
         TabRow(
             selectedTabIndex = selectedTab,
             containerColor = CARD_BG,
@@ -111,7 +108,6 @@ fun BusinessSetupScreen(
             }
         }
 
-        //   TAB CONTENT
         when (selectedTab) {
             0 -> InfoTab(businessHours = businessHours, businessDesc = businessDesc,
                 onHoursChange = { businessHours = it }, onDescChange = { businessDesc = it })
@@ -145,7 +141,6 @@ fun BusinessSetupScreen(
             3 -> CompleteTab(businessHours = businessHours, servicesCount = servicesList.size, imagesCount = imageCount)
         }
 
-        //  NAVIGATION BUTTONS
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -165,26 +160,21 @@ fun BusinessSetupScreen(
                 }
             }
 
-            Button(
+            AppButton(
+                text = if (selectedTab == 3) "Complete Setup" else "Next",
+                modifier = Modifier.weight(1f),
                 onClick = {
                     if (selectedTab < 3) {
                         selectedTab++
                     } else {
                         callbacks.onCompleteSetup(businessHours, servicesList)
                     }
-                },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = PRIMARY_BLUE)
-            ) {
-                Text(if (selectedTab == 3) "Complete Setup" else "Next", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.White)
-            }
+                }
+            )
         }
     }
 }
 
-//  TAB 1: BUSINESS INFO
 @Composable
 fun InfoTab(
     businessHours: String,
@@ -243,7 +233,6 @@ fun InfoTab(
     }
 }
 
-//  TAB 2: SERVICES
 @Composable
 fun ServicesTab(
     services: List<Service>,
@@ -300,15 +289,12 @@ fun ServicesTab(
                     )
                 }
 
-                Button(
-                    onClick = onAddService,
-                    modifier = Modifier.fillMaxWidth().height(48.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
-                ) {
-                    Icon(Icons.Filled.Add, null, tint = Color.White, modifier = Modifier.size(20.dp))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Add Service", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                }
+                AppButton(
+                    text = "Add Service",
+                    icon = Icons.Filled.Add,
+                    variant = ButtonVariant.SUCCESS,
+                    onClick = onAddService
+                )
             }
         }
 
@@ -336,7 +322,6 @@ fun ServicesTab(
     }
 }
 
-//  TAB 3: IMAGES
 @Composable
 fun ImagesTab(imageCount: Int, onImageCountChange: (Int) -> Unit) {
     Column(
@@ -372,7 +357,6 @@ fun ImagesTab(imageCount: Int, onImageCountChange: (Int) -> Unit) {
     }
 }
 
-//  TAB 4: COMPLETE
 @Composable
 fun CompleteTab(businessHours: String, servicesCount: Int, imagesCount: Int) {
     Column(
@@ -413,9 +397,6 @@ fun SummaryRow(label: String, value: String) {
         Text(value, fontSize = 13.sp, fontWeight = FontWeight.Medium, color = TEXT_DARK)
     }
 }
-
-
-
 
 
 @Preview(showBackground = true, widthDp = 480, heightDp = 600)

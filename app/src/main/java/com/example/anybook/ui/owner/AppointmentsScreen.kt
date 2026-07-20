@@ -1,12 +1,9 @@
 package com.example.anybook.ui.owner
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.EventBusy
@@ -23,16 +20,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.anybook.ui.components.AppointmentCard
+import com.example.anybook.ui.components.EmptyState
 
 private val PRIMARY_BLUE = Color(0xFF1565C0)
 private val BACKGROUND = Color(0xFFFAFAFA)
 private val CARD_BACKGROUND = Color.White
 private val TEXT_DARK = Color(0xFF212121)
-private val TEXT_LIGHT = Color(0xFF757575)
-private val ERROR_RED = Color(0xFFD32F2F)
-private val SUCCESS_GREEN = Color(0xFF2E7D32)
 
-// ============ FILTER OPTIONS ============
 enum class AppointmentFilter(val label: String) {
     ALL("All"),
     UPCOMING("Upcoming"),
@@ -64,7 +59,7 @@ fun AppointmentsScreen(
             .fillMaxSize()
             .background(BACKGROUND)
     ) {
-        // ============ HEADER ============
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -87,7 +82,6 @@ fun AppointmentsScreen(
             )
         }
 
-        // ============ FILTER CHIPS ============
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -116,28 +110,12 @@ fun AppointmentsScreen(
             }
         }
 
-        // ============ APPOINTMENTS LIST ============
         if (filteredAppointments.isEmpty()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(32.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.EventBusy,
-                    contentDescription = null,
-                    tint = TEXT_LIGHT,
-                    modifier = Modifier.size(48.dp)
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "No ${selectedFilter.label.lowercase()} appointments",
-                    fontSize = 14.sp,
-                    color = TEXT_LIGHT
-                )
-            }
+            EmptyState(
+                icon = Icons.Default.EventBusy,
+                title = "No ${selectedFilter.label.lowercase()} appointments",
+                modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+            )
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -145,59 +123,14 @@ fun AppointmentsScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(filteredAppointments) { appointment ->
-                    AppointmentRow(
-                        appointment = appointment,
+                    AppointmentCard(
+                        clientName = appointment.clientName,
+                        service = appointment.service,
+                        time = appointment.time,
+                        status = appointment.status,
                         onClick = { callbacks.onAppointmentClick(appointment.id) }
                     )
                 }
-            }
-        }
-    }
-}
-
-// ============ APPOINTMENT ROW ============
-@Composable
-private fun AppointmentRow(appointment: OwnerBookingSummary, onClick: () -> Unit) {
-    val statusColor = when (appointment.status) {
-        "Upcoming" -> PRIMARY_BLUE
-        "Completed" -> SUCCESS_GREEN
-        else -> ERROR_RED
-    }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .background(CARD_BACKGROUND, RoundedCornerShape(12.dp))
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .background(PRIMARY_BLUE.copy(alpha = 0.1f), CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = appointment.clientName.take(1).uppercase(),
-                color = PRIMARY_BLUE,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(appointment.clientName, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = TEXT_DARK)
-            Text(appointment.service, fontSize = 12.sp, color = TEXT_LIGHT)
-        }
-        Column(horizontalAlignment = Alignment.End) {
-            Text(appointment.time, fontSize = 12.sp, color = TEXT_DARK)
-            Spacer(modifier = Modifier.height(4.dp))
-            Box(
-                modifier = Modifier
-                    .background(statusColor.copy(alpha = 0.1f), RoundedCornerShape(6.dp))
-                    .padding(horizontal = 8.dp, vertical = 2.dp)
-            ) {
-                Text(appointment.status, fontSize = 10.sp, color = statusColor, fontWeight = FontWeight.Medium)
             }
         }
     }
