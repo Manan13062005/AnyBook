@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.anybook.ui.components.AppButton
 
 @Composable
 fun OwnerSignUpScreen(
@@ -63,7 +64,6 @@ fun OwnerSignUpScreen(
                 cursorColor = Color(0xFF1565C0)
             )
 
-            // Name — required
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it; errorMessage = null },
@@ -86,7 +86,6 @@ fun OwnerSignUpScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Phone number — required
             OutlinedTextField(
                 value = phone,
                 onValueChange = { phone = it; errorMessage = null },
@@ -100,7 +99,6 @@ fun OwnerSignUpScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Email — optional
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it; errorMessage = null },
@@ -113,7 +111,6 @@ fun OwnerSignUpScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Password
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it; errorMessage = null },
@@ -135,7 +132,6 @@ fun OwnerSignUpScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Confirm Password — separate state, separate visibility toggle
             OutlinedTextField(
                 value = confirmPassword,
                 onValueChange = { confirmPassword = it; errorMessage = null },
@@ -168,7 +164,8 @@ fun OwnerSignUpScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            AppButton(
+                text = "Register Business",
                 onClick = {
                     when {
                         name.isBlank() ->
@@ -187,19 +184,10 @@ fun OwnerSignUpScreen(
                             errorMessage = "Password is required"
                         confirmPassword != password ->
                             errorMessage = "Passwords do not match"
-                        else -> onRegisterBusinessClick(name, businessname,phone, email, password)
+                        else -> onRegisterBusinessClick(name, businessname, phone, email, password)
                     }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1565C0),
-                    contentColor = Color.White
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-            ) {
-                Text("Register Business")
-            }
+                }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 

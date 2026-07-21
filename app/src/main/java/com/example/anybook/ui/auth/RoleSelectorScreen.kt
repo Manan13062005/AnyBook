@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.anybook.data.model.UserRole
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.Card
-import androidx.compose.ui.unit.sp
+import com.example.anybook.ui.components.AppButton
 
 @Composable
 fun RoleSelectorScreen(onRoleSelected: (UserRole) -> Unit) {
@@ -44,6 +42,7 @@ fun RoleSelectorScreen(onRoleSelected: (UserRole) -> Unit) {
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold
             )
+
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
@@ -80,37 +79,17 @@ fun RoleSelectorScreen(onRoleSelected: (UserRole) -> Unit) {
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
 
-                        Button(
-                            onClick = { onRoleSelected(UserRole.CLIENT) },
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF3D77B0)
-                            )
-                        ) {
-                            Text(
-                                text = "Client",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
+                        AppButton(
+                            text = "Client",
+                            modifier = Modifier.weight(1f).height(56.dp),
+                            onClick = { onRoleSelected(UserRole.CLIENT) }
+                        )
 
-                        Button(
-                            onClick = { onRoleSelected(UserRole.OWNER) },
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(56.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF3D77B0)
-                            )
-                        ) {
-                            Text(
-                                text = "Owner",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
+                        AppButton(
+                            text = "Owner",
+                            modifier = Modifier.weight(1f).height(56.dp),
+                            onClick = { onRoleSelected(UserRole.OWNER) }
+                        )
                     }
                 }
             }

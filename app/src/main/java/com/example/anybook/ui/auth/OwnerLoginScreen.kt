@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.anybook.ui.components.AppButton
 
 @Composable
 fun OwnerLoginScreen(
@@ -53,14 +54,12 @@ fun OwnerLoginScreen(
                 modifier = Modifier.padding(top = 4.dp, bottom = 32.dp)
             )
 
-            // Shared field colors so the fields match the app's blue regardless of theme state
             val fieldColors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF1565C0),
                 focusedLabelColor = Color(0xFF1565C0),
                 cursorColor = Color(0xFF1565C0)
             )
 
-            // Phone number — required
             OutlinedTextField(
                 value = phone,
                 onValueChange = { phone = it; errorMessage = null },
@@ -74,7 +73,6 @@ fun OwnerLoginScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Email — required
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it; errorMessage = null },
@@ -119,7 +117,8 @@ fun OwnerLoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            AppButton(
+                text = "Log In",
                 onClick = {
                     when {
                         phone.isBlank() ->
@@ -134,17 +133,8 @@ fun OwnerLoginScreen(
                             errorMessage = "Password is required"
                         else -> onLoginClick(phone, email, password)
                     }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1565C0), // Blue
-                    contentColor = Color.White
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-            ) {
-                Text("Log In")
-            }
+                }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -153,7 +143,7 @@ fun OwnerLoginScreen(
                 TextButton(onClick = onNavigateToSignUp) {
                     Text(
                         "Register Business",
-                        color = Color(0xFF64B5F6), // Light blue
+                        color = Color(0xFF64B5F6),
                         fontWeight = FontWeight.SemiBold
                     )
                 }
@@ -167,4 +157,3 @@ fun OwnerLoginScreen(
 private fun OwnerLoginScreenPreview() {
     OwnerLoginScreen()
 }
-

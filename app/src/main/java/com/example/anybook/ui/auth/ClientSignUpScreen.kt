@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.anybook.ui.components.AppButton
 
 @Composable
 fun ClientSignUpScreen(
@@ -62,7 +63,6 @@ fun ClientSignUpScreen(
                 cursorColor = Color(0xFF1565C0)
             )
 
-            // Name — required
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it; errorMessage = null },
@@ -74,7 +74,6 @@ fun ClientSignUpScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Phone number — required
             OutlinedTextField(
                 value = phone,
                 onValueChange = { phone = it; errorMessage = null },
@@ -88,7 +87,6 @@ fun ClientSignUpScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Email — optional
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it; errorMessage = null },
@@ -101,7 +99,6 @@ fun ClientSignUpScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Password
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it; errorMessage = null },
@@ -123,7 +120,6 @@ fun ClientSignUpScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Confirm Password — separate state, separate visibility toggle
             OutlinedTextField(
                 value = confirmPassword,
                 onValueChange = { confirmPassword = it; errorMessage = null },
@@ -156,7 +152,8 @@ fun ClientSignUpScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            AppButton(
+                text = "Create Account",
                 onClick = {
                     when {
                         name.isBlank() ->
@@ -171,17 +168,8 @@ fun ClientSignUpScreen(
                             errorMessage = "Passwords do not match"
                         else -> onCreateAccountClick(name, phone, email.ifBlank { null }, password)
                     }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1565C0),
-                    contentColor = Color.White
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-            ) {
-                Text("Create Account")
-            }
+                }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
