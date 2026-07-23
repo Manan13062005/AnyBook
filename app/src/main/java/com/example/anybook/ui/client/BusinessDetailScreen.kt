@@ -22,9 +22,9 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.rememberDatePickerState
+import com.example.anybook.ui.components.AppButton
 
 private val PRIMARY_BLUE = Color(0xFF1565C0)
-private val LIGHT_BLUE = Color(0xFF64B5F6)
 private val BACKGROUND = Color(0xFFFAFAFA)
 private val CARD_BACKGROUND = Color.White
 private val TEXT_DARK = Color(0xFF212121)
@@ -158,14 +158,12 @@ fun BusinessDetailScreen(
                 }
             }
 
-            Button(
-                onClick = { if (selectedTime.isNotEmpty()) onNext(selectedService, "$selectedDate at $selectedTime") },
-                Modifier.fillMaxWidth().height(48.dp).align(Alignment.BottomCenter).padding(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = PRIMARY_BLUE),
-                enabled = selectedTime.isNotEmpty()
-            ) {
-                Text("Continue", fontWeight = FontWeight.Bold, fontSize = 15.sp, color = Color.White)
-            }
+            AppButton(
+                text = "Continue",
+                enabled = selectedTime.isNotEmpty(),
+                modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp),
+                onClick = { if (selectedTime.isNotEmpty()) onNext(selectedService, "$selectedDate at $selectedTime") }
+            )
         }
     }
 }

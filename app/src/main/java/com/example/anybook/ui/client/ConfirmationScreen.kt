@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.material3.Surface
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.anybook.ui.components.AppButton
+import com.example.anybook.ui.components.ButtonVariant
 
 data class ConfirmationScreenCallbacks(
     val onConfirmClick: () -> Unit,
@@ -36,9 +38,8 @@ fun ConfirmationScreen(
             .padding(20.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        // Content
         Column(modifier = Modifier.weight(1f)) {
-            // Business Name
+
             Text(
                 text = businessName,
                 fontSize = 18.sp,
@@ -49,7 +50,6 @@ fun ConfirmationScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Date & Time (Highlighted)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -62,7 +62,9 @@ fun ConfirmationScreen(
                     color = Color.Gray,
                     fontWeight = FontWeight.Medium
                 )
+
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Text(
                     text = selectedDate,
                     fontSize = 16.sp,
@@ -79,7 +81,6 @@ fun ConfirmationScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Customer Details
             Column {
                 Text(
                     text = "Your Details",
@@ -94,45 +95,19 @@ fun ConfirmationScreen(
             }
         }
 
-        // Buttons
         Column(modifier = Modifier.fillMaxWidth()) {
-            Button(
-                onClick = callbacks.onConfirmClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1565C0)
-                ),
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp)
-            ) {
-                Text(
-                    text = "Confirm Booking",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White
-                )
-            }
+            AppButton(
+                text = "Confirm Booking",
+                onClick = callbacks.onConfirmClick
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Button(
-                onClick = callbacks.onCancelClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFF5F5F5)
-                ),
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp)
-            ) {
-                Text(
-                    text = "Cancel",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
-                )
-            }
+            AppButton(
+                text = "Cancel",
+                variant = ButtonVariant.OUTLINED,
+                onClick = callbacks.onCancelClick
+            )
         }
     }
 }

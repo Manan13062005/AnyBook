@@ -18,13 +18,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.clickable
+import com.example.anybook.ui.components.AppButton
+import com.example.anybook.ui.components.ButtonVariant
 
 private val PRIMARY_BLUE = Color(0xFF1565C0)
 private val BACKGROUND = Color(0xFFFAFAFA)
 private val CARD_BACKGROUND = Color.White
 private val TEXT_DARK = Color(0xFF212121)
 private val TEXT_LIGHT = Color(0xFF757575)
-private val ERROR_RED = Color(0xFFD32F2F)
 
 data class ClientProfileCallbacks(
     val onBackClick: () -> Unit,
@@ -47,7 +48,6 @@ fun ClientProfileScreen(
             .fillMaxSize()
             .background(BACKGROUND)
     ) {
-        // ============ HEADER ============
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -65,7 +65,6 @@ fun ClientProfileScreen(
             modifier = Modifier.fillMaxWidth().padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // ============ PROFILE INFO CARD ============
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -81,7 +80,9 @@ fun ClientProfileScreen(
                 ) {
                     Text(name.take(1).uppercase(), color = PRIMARY_BLUE, fontSize = 22.sp, fontWeight = FontWeight.Bold)
                 }
+
                 Spacer(modifier = Modifier.width(16.dp))
+
                 Column {
                     Text(name, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = TEXT_DARK)
                     Text(email, fontSize = 13.sp, color = TEXT_LIGHT)
@@ -89,7 +90,6 @@ fun ClientProfileScreen(
                 }
             }
 
-            // ============ MENU OPTIONS ============
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -108,21 +108,15 @@ fun ClientProfileScreen(
                 )
             }
 
-            // ============ LOGOUT ============
-            Button(
-                onClick = callbacks.onLogout,
-                modifier = Modifier.fillMaxWidth().height(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = ERROR_RED),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Log Out", fontWeight = FontWeight.Bold)
-            }
+            AppButton(
+                text = "Log Out",
+                icon = Icons.AutoMirrored.Filled.Logout,
+                variant = ButtonVariant.DESTRUCTIVE,
+                onClick = callbacks.onLogout
+            )
         }
     }
 
-    // ============ SWITCH ROLE CONFIRMATION DIALOG ============
     if (showSwitchRoleDialog) {
         AlertDialog(
             onDismissRequest = { showSwitchRoleDialog = false },
@@ -151,7 +145,9 @@ private fun ProfileMenuItem(icon: androidx.compose.ui.graphics.vector.ImageVecto
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(icon, contentDescription = null, tint = PRIMARY_BLUE)
+
         Spacer(modifier = Modifier.width(12.dp))
+
         Text(label, fontSize = 14.sp, color = TEXT_DARK, modifier = Modifier.weight(1f))
         Icon(Icons.Default.ChevronRight, contentDescription = null, tint = TEXT_LIGHT)
     }

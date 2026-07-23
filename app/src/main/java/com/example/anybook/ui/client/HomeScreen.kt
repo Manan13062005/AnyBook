@@ -34,11 +34,9 @@ fun HomeScreen(
     onBusinessTap: (businessId: String) -> Unit,
     onMyBookingsTap: () -> Unit
 ) {
-    // STATE
     var searchQuery by remember { mutableStateOf("") }
     val mockBusinesses = remember { getMockBusinesses() }
 
-    // SEARCH LOGIC
     val filteredBusinesses = if (searchQuery.isEmpty()) {
         mockBusinesses
     } else {
@@ -48,7 +46,6 @@ fun HomeScreen(
         }
     }
 
-    // LAYOUT
     Scaffold(
         topBar = {
             TopAppBar(
@@ -82,7 +79,6 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // SEARCH BAR
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
@@ -107,9 +103,8 @@ fun HomeScreen(
                 )
             )
 
-            // BUSINESS LIST
             if (filteredBusinesses.isEmpty()) {
-                // Empty state
+
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -159,7 +154,6 @@ fun BusinessCard(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            // Name and Rating
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -184,7 +178,9 @@ fun BusinessCard(
                         tint = Color(0xFFFFB300),
                         modifier = Modifier.size(16.dp)
                     )
+
                     Spacer(modifier = Modifier.width(4.dp))
+
                     Text(
                         String.format("%.1f", business.rating),
                         fontWeight = FontWeight.SemiBold,
@@ -196,7 +192,6 @@ fun BusinessCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Category
             Text(
                 business.category,
                 fontSize = 13.sp,
@@ -205,7 +200,6 @@ fun BusinessCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Featured service / description
             Text(
                 "Professional services tailored for you",
                 fontSize = 13.sp,
@@ -215,7 +209,6 @@ fun BusinessCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // View Details Button
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -227,7 +220,9 @@ fun BusinessCard(
                     fontSize = 14.sp,
                     color = LIGHT_BLUE
                 )
+
                 Spacer(modifier = Modifier.width(4.dp))
+
                 Text(
                     "→",
                     fontWeight = FontWeight.Bold,

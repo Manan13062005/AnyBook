@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import com.example.anybook.ui.components.AppButton
 
 data class BookingScreenCallbacks(
     val onNameChange: (String) -> Unit,
@@ -45,7 +46,6 @@ fun BookingScreen(
             .background(Color.White)
             .padding(20.dp)
     ) {
-        // Header
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -75,7 +75,6 @@ fun BookingScreen(
         ) {
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Date Selection
             Text(
                 text = "Select Date",
                 fontSize = 14.sp,
@@ -109,7 +108,6 @@ fun BookingScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Time Selection
             Text(
                 text = "Select Time",
                 fontSize = 14.sp,
@@ -153,7 +151,6 @@ fun BookingScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Name Input
             Text(
                 text = "Your Name",
                 fontSize = 14.sp,
@@ -182,7 +179,6 @@ fun BookingScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Phone Input
             Text(
                 text = "Phone Number",
                 fontSize = 14.sp,
@@ -210,25 +206,11 @@ fun BookingScreen(
             )
         }
 
-        // Next Button
-        Button(
-            onClick = callbacks.onNextClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF1565C0)
-            ),
-            shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
-            enabled = currentName.isNotEmpty() && currentPhone.isNotEmpty() && currentDate.isNotEmpty() && currentTime.isNotEmpty()
-        ) {
-            Text(
-                text = "Next",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Color.White
-            )
-        }
+        AppButton(
+            text = "Next",
+            enabled = currentName.isNotEmpty() && currentPhone.isNotEmpty() && currentDate.isNotEmpty() && currentTime.isNotEmpty(),
+            onClick = callbacks.onNextClick
+        )
     }
 }
 

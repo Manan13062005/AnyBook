@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.anybook.data.model.Booking
 import com.example.anybook.data.model.BookingStatus
+import com.example.anybook.ui.components.AppButton
 
 @Composable
 fun BookingSuccessScreen(
@@ -47,7 +48,6 @@ fun BookingSuccessScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Success Icon
         Box(
             modifier = Modifier
                 .size(80.dp)
@@ -86,7 +86,6 @@ fun BookingSuccessScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Receipt Card
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,11 +95,9 @@ fun BookingSuccessScreen(
                 )
                 .padding(20.dp)
         ) {
-            // Divider
             Divider()
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Business Location
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -117,7 +114,6 @@ fun BookingSuccessScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Service
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -134,7 +130,6 @@ fun BookingSuccessScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Date
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -151,7 +146,6 @@ fun BookingSuccessScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Time
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -168,7 +162,6 @@ fun BookingSuccessScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Price
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -185,17 +178,17 @@ fun BookingSuccessScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Divider
             Divider()
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Confirmation Email
             Text(
                 text = "Confirmation email sent to:",
                 fontSize = 12.sp,
                 color = Color.Gray
             )
+
             Spacer(modifier = Modifier.height(4.dp))
+
             Text(
                 text = "user@email.com",
                 fontSize = 13.sp,
@@ -205,31 +198,18 @@ fun BookingSuccessScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Divider
             Divider()
         }
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // View Booking Button
-        Button(
-            onClick = onViewBooking,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0))
-        ) {
-            Text(
-                text = "View My Booking",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.White
-            )
-        }
+        AppButton(
+            text = "View My Booking",
+            onClick = onViewBooking
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Cancel Booking Button
         Button(
             onClick = onCancelBooking,
             modifier = Modifier
